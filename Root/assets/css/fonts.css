@@ -1,0 +1,30 @@
+
+	@font-face {
+    font-family:'ubuntuB';
+    src: url('../fonts/ubuntu/Ubuntu-B.ttf');
+   }
+	
+	@font-face {
+    font-family:'ubuntuR';
+    src: url('../fonts/ubuntu/Ubuntu-M.ttf');
+   }
+
+   @font-face {
+    font-family:'ubuntuL';
+    src: url('../fonts/ubuntu/Ubuntu-L.ttf');
+   }
+
+	@font-face {
+    font-family:'montserratB';
+    src: url('../fonts/montserrat/Montserrat-Bold.otf');
+   }
+
+   @font-face {
+    font-family:'montserratR';
+    src: url('../fonts/montserrat/Montserrat-Regular.otf');
+   }
+
+   @font-face {
+    font-family:'montserratL';
+    src: url('../fonts/montserrat/Montserrat-Light.otf');
+   }

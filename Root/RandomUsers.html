@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Eventide</title>
+	<link rel="stylesheet" type="text/css" href="assets/css/fonts.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/normalize.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/animate.css">
+	<link rel="stylesheet" type="text/css" href="assets/fonts/font-awesome-4.3.0/css/font-awesome.css">
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+	<script type="text/javascript" charset="UTF-8" src="assets/js/scripts.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body id="contain_app">
+        <div class="container">
+           <div class="col-lg-12 contain_title_app">
+               <h1 class="title_app col-12">
+                   Random Users
+               </h1>
+               <small class="small_text col-12">by Yaroslav Kikot</small>
+           </div>
+            <div class="contain_pie col-lg-12 adding_button_wrapper pb-2">
+                <button class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Show Chart <i class="fa fa-pie-chart pl-1"></i></button>
+                <div class="modal fade bd-example-modal-lg" id="modalWindow" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                  <div class="modal-dialog  modal-lg">
+                    <div class="modal-content text_error_modal">
+                     <div class="error_block pt-3 pb-3"> <i class="fa fa-arrow-down pr-2"></i> no,no,no! <i class="fa fa-arrow-down pl-2"></i><br> 
+                     Please add some users first</div>
+                      <div id="donutchart"></div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        <div class="col-lg-12 adding_button_wrapper">
+           <button type="button" class="btn btn-success adding_button">Add new user <i class="fa fa-user-plus pl-1"></i></button>
+        </div>
+        <div class="col-lg-6 offset-lg-3 pt-4 search">
+           <h5 class="title_search">Search</h5>
+            <div class="input-group">
+              <input type="text" class="form-control input_search" placeholder="Type name for start" aria-describedby="basic-addon1">
+               <span class="input-group-addon icon_search" id="basic-addon1"><i class="fa fa-search"></i></span>
+            </div>
+        </div>
+        <div class="info_fields pt-5">
+           <div class="row">
+            <div class="col-lg-2 offset-lg-1 table_header_info">last</div>
+            <div class="col-lg-2 table_header_info">first</div>
+            <div class="col-lg-2 table_header_info">username</div>
+            <div class="col-lg-2 table_header_info">phone</div>
+            <div class="col-lg-2 table_header_info">location</div>
+            </div>
+        </div>
+        <div id="users_container" class="pt-1">
+            
+        </div>
+    </div>
+    <script type="text/javascript">
+    $('#modalWindow').on('show.bs.modal', function (e) {
+        $female = $("#users_container").find('.fa-female').length;
+        $male = $("#users_container").find('.fa-male').length;
+        
+        if($female > 0 || $male > 0){
+            $(".error_block").hide();
+            $('#donutchart').show();
+            makePie();
+        }
+        else{
+            $('#donutchart').hide();
+            $(".error_block").show();
+        }
+    })
+    $('#modalWindow').on('hide.bs.modal', function (e) {
+          $('#donutchart').empty();
+    })
+             function makePie(){
+              google.charts.load("current", {packages:["corechart"]});
+              google.charts.setOnLoadCallback(drawChart);
+                function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                  ['Task', 'Hours per Day'],
+                  ['female', $female],
+                  ['male',  $male]
+                ]);
+                var options = {
+                   title: 'Users gender'
+                  ,pieSliceText: 'none'
+                  ,'is3D':true
+                  ,height: 300
+                  ,width: 500
+                    ,slices: {
+                    0: { color: '#06987d' },
+                    1: { color: 'red' }
+                    }
+                };
+                var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+                chart.draw(data, options);
+              }
+             }
+    </script>
+</body>
+</html>
