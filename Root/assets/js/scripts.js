@@ -1,14 +1,23 @@
-$( document ).ready (function () {
-    $(".adding_button").click ( function () {
+
+$( document ).ready(function () {
+    $(".adding_button").click( function () {
         adding_new_user();
     });
     
+    $allUsers = [];
     
-    $(".icon_search").click ( function () {
-    
+
+
+    $(".input_search").keyup( function (){
+       var $search_name = $(".input_search").val();
+       $('#users_container').find('.user_wrapper ').hide();
+        $('[data-name^="'+$search_name+'"]').show();
+        if(!$search_name){
+            $('#users_container').find('.user_wrapper ').show();
+        }
     });
     
-    $allUsers = 0;
+       
     
     function adding_new_user(){
     $.ajax({
@@ -20,10 +29,9 @@ $( document ).ready (function () {
             $picture = $randomUser.picture;
             $login = $randomUser.login;
             $location = $randomUser.location;
-            $singleUser = [];
             
-            $user_wrapper = $("<div class='row user_wrapper animated slideInLeft'>");
-            $user_wrapper.attr("id", $name.first);
+            $user_wrapper = $("<div class='row user_wrapper'>");
+            $user_wrapper.attr("data-name", $name.first);
             $user_wrapper.appendTo($("#users_container"));
 
             $picture_wrapper= $("<div class='col-lg-1'>");
@@ -36,29 +44,25 @@ $( document ).ready (function () {
             $lastName = $("<div class='col-lg-2 last_name'>");
             $lastName.html($name.last);
             $lastName.appendTo($user_wrapper);
-            $singleUser.push($name.last);
             
             $firstName = $("<div class='col-lg-2 first_name'>");
             $firstName.html($name.first);
             $firstName.appendTo($user_wrapper);
-            $singleUser.push($name.first);
-
+            $allUsers.push($name.first);
+            
             $userName = $("<div class='col-lg-2 user_name'>");
             $userName.html($login.username);
             $userName.appendTo($user_wrapper);
-            $singleUser.push($login.username);
 
             $phone = $("<div class='col-lg-2 phone'>");
             $phone.html($randomUser.phone);
             $phone.appendTo($user_wrapper);
-            $singleUser.push($randomUser.phone);
             
             $state = $("<div class='col-lg-2 city'>");
             $state.html($location.state);
             $state.appendTo($user_wrapper);
-            $singleUser.push($location.state);
             
-            $iconWrapper = $("<div class='col-lg-1 more_info_button closed'>");
+            $iconWrapper = $("<div class='col-lg-1 more_info_button closed' onclick='openAdditionalInfo(this)'>");
             $iconWrapper.appendTo($user_wrapper);
             $MoreInfo = $("<i class='fa fa-plus more_info_icon'>");
             $MoreInfo.appendTo($iconWrapper);
@@ -134,26 +138,26 @@ $( document ).ready (function () {
             $imageBig = $("<img class='img-thumbnail img-fluid user_image_big'>");
             $imageBig.attr("src", $picture.large);
             $imageBig.appendTo($containLastColumn);
-
-                $(".more_info_button:last").click(function(){
-                    if($(this).hasClass("closed")){
-                    $(this).parent().parent().find($(".user_wrapper_additional")).slideUp();
-                    $(this).parent().parent().find($(".more_info_button")).removeClass("active");
-                    $(this).parent().parent().find($(".more_info_button")).addClass("closed");
-                    $(this).parent().parent().find($(".more_info_icon")).removeClass("fa-minus");
-                    $(this).parent().parent().find($(".more_info_icon")).addClass("fa-plus");
-                    $(this).next('.user_wrapper_additional').slideDown();
-                    $(this).children("i").toggleClass("fa-minus fa-plus");
-                    $(this).toggleClass("active closed");
-                    
-                    }
-                        else if($(this).hasClass("active")){
-                            $(this).next('.user_wrapper_additional').slideUp();
-                            $(this).toggleClass("closed active");
-                            $(this).children("i").toggleClass("fa-plus fa-minus ");
-                        }
-                });
             }
         });
     };
 });
+
+   function openAdditionalInfo(element){
+        if($(element).hasClass("closed")){
+            $(element).parent().parent().find($(".user_wrapper_additional")).slideUp();
+            $(element).parent().parent().find($(".more_info_button")).removeClass("active");
+            $(element).parent().parent().find($(".more_info_button")).addClass("closed");
+            $(element).parent().parent().find($(".more_info_icon")).removeClass("fa-minus");
+            $(element).parent().parent().find($(".more_info_icon")).addClass("fa-plus");
+            $(element).next('.user_wrapper_additional').slideDown();
+            $(element).children("i").toggleClass("fa-minus fa-plus");
+            $(element).toggleClass("active closed");
+
+            }
+                else if($(element).hasClass("active")){
+                    $(element).next('.user_wrapper_additional').slideUp();
+                    $(element).toggleClass("closed active");
+                    $(element).children("i").toggleClass("fa-plus fa-minus ");
+                }
+    };
